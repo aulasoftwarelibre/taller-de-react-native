@@ -1,7 +1,15 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
 import CatsCafe from './components/CatsCafe';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import CatScreen from './components/CatScreen';
+
+export type RootStackParamList = {
+  CatsCafe: undefined;
+  Cat: undefined;
+  CatScreen: { name: string };
+};
 
 declare global {
   namespace ReactNativePaper {
@@ -25,21 +33,17 @@ const theme = {
   },
 };
 
+const Stack = createStackNavigator<RootStackParamList>();
+
 export default function App() {
   return (
-    <PaperProvider theme={theme}>
-      <View style={styles.container}>
-        <CatsCafe />
-      </View>
-    </PaperProvider>
+    <NavigationContainer>
+      <PaperProvider theme={theme}>
+        <Stack.Navigator>
+          <Stack.Screen name="CatsCafe" component={CatsCafe} />
+          <Stack.Screen name="CatScreen" component={CatScreen} />
+        </Stack.Navigator>
+      </PaperProvider>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.myBackgroundColor,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

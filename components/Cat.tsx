@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, Button, withTheme } from 'react-native-paper';
+import { CatScreenNavigationProp } from './CatsCafe';
 
 export type Props = {
   name: string;
   catColor: string;
   theme: ReactNativePaper.Theme;
+  navigation: CatScreenNavigationProp;
 };
 
 const Cat = (props: Props) => {
-  const { colors } = props.theme;
+  const { name, catColor, theme, navigation } = props;
+  const { colors } = theme;
   const [isHungry, setIsHungry] = useState(true);
   const styles = StyleSheet.create({
     catContainer: {
@@ -28,7 +31,7 @@ const Cat = (props: Props) => {
     },
     avatar: {
       marginRight: 4,
-      backgroundColor: props.catColor,
+      backgroundColor: catColor,
     },
   });
 
@@ -37,15 +40,16 @@ const Cat = (props: Props) => {
       <View style={styles.catDialogueContainer}>
         <Avatar.Icon style={styles.avatar} size={40} icon="cat" />
         <Text style={styles.catDialogue}>
-          I am {props.name}, and I am {isHungry ? 'hungry' : 'full'}!
+          I am {name}, and I am {isHungry ? 'hungry' : 'full'}!
         </Text>
       </View>
       <Button
         icon="fish"
-        color={props.catColor}
+        color={catColor}
         mode="contained"
         onPress={() => {
           setIsHungry(false);
+          navigation.navigate('CatScreen', { name: name });
         }}
         disabled={!isHungry}
         children={isHungry ? 'Pour me some fish, please!' : 'Thank you!'}

@@ -1,16 +1,35 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { withTheme } from 'react-native-paper';
 import Cat from './Cat';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../App';
 
-const CatsCafe = () => {
+export type CatScreenNavigationProp = StackNavigationProp<RootStackParamList, 'CatScreen'>;
+
+export type Props = {
+  theme: ReactNativePaper.Theme;
+  navigation: CatScreenNavigationProp;
+};
+
+const CatsCafe = (props: Props) => {
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: props.theme.colors.myBackgroundColor,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });
+
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={{ color: 'white', fontSize: 42, alignSelf: 'center' }}>CATS CAFE</Text>
-      <Cat name="Maru" catColor="gray" />
-      <Cat name="Jellylorum" catColor="black" />
-      <Cat name="Spot" catColor="white" />
+      <Cat name="Maru" catColor="gray" navigation={props.navigation} />
+      <Cat name="Jellylorum" catColor="black" navigation={props.navigation} />
+      <Cat name="Spot" catColor="white" navigation={props.navigation} />
     </View>
   );
 };
 
-export default CatsCafe;
+export default withTheme(CatsCafe);
